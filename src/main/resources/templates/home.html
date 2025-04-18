@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeYZOS6s9mhR43Nm28psii4c_4weUDrstABg&s" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>Book Heaven</title>
+    <style>
+      :root {
+        --primary: #1a1a2e;
+        --secondary: #FF8811;
+        --accent: #5C80BC;
+        --light: #F9F9F9;
+        --dark: #1D1E33;
+      }
+      
+      * {
+        transition: all 0.3s ease;
+      }
+      
+      body {
+        background-color: var(--light);
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      h1, h2, h3, h4, h5 {
+        font-family: 'Poppins', sans-serif;
+      }
+      
+      .navbar {
+        background-color: var(--primary);
+        padding: 15px 0;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 1;
+      }
+      
+      .nav-link {
+        color: white !important;
+        font-weight: 500;
+        margin: 0 10px;
+        position: relative;
+        padding: 5px 0;
+      }
+      
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        height: 2px;
+        width: 0;
+        left: 0;
+        bottom: 0;
+        background: var(--secondary);
+        transition: 0.3s;
+      }
+      
+      .nav-link:hover {
+        color: var(--secondary) !important;
+      }
+      
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      
+      .hero {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+        color: white;
+		margin-top: 1rem;
+        padding: 5rem 0;
+        border-radius: 0 0 50px 50px;
+        margin-bottom: 3rem;
+      }
+      
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+      
+      .btn-custom {
+        background-color: var(--secondary);
+        color: white;
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-weight: 500;
+        border: none;
+        box-shadow: 0 4px 15px rgba(255, 136, 17, 0.3);
+      }
+      
+      .btn-custom:hover {
+        background-color: #ff9a33;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 136, 17, 0.4);
+        color: white;
+      }
+      
+      .book-section {
+        padding: 4rem 0;
+      }
+      
+      .book-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+      }
+      
+      .book-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .book-img {
+        height: 200px;
+        overflow: hidden;
+      }
+      
+      .book-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      
+      .book-card:hover .book-img img {
+        transform: scale(1.05);
+      }
+      
+      .book-info {
+        padding: 1.5rem;
+      }
+      
+      .book-info h5 {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--dark);
+      }
+      
+      .book-info p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+      
+      .book-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #888;
+        font-size: 0.85rem;
+      }
+      
+      footer {
+        background-color: var(--primary);
+        color: white;
+        padding: 3rem 0 2rem;
+        margin-top: 4rem;
+      }
+	  .footerhover:hover {
+		 color: var(--accent) !important;
+	  }
+      
+      .easter-egg {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        text-align: center;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .easter-egg.active {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      
+      .easter-egg h3 {
+        color: var(--secondary);
+        margin-bottom: 15px;
+      }
+      
+      .easter-egg p {
+        margin-bottom: 20px;
+      }
+      
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+      
+      .overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+    
+      
+      /* Responsive styles */
+      @media (max-width: 991px) {
+        .navbar-collapse {
+          background-color: var(--primary);
+          padding: 15px;
+          border-radius: 10px;
+          margin-top: 10px;
+        }
+        
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+      }
+      
+      @media (max-width: 767px) {
+        .hero {
+          padding: 3rem 0;
+        }
+        
+        .hero h1 {
+          font-size: 2rem;
+        }
+        
+        .navbar-brand img {
+          width: 80px;
+        }
+      }
+      
+      /* Animation classes */
+      .fade-in {
+        animation: fadeIn 1s ease-in-out;
+      }
+      
+      .slide-up {
+        animation: slideUp 0.8s ease-out;
+      }
+      
+      .bounce-in {
+        animation: bounceIn 1s ease;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      
+      @keyframes bounceIn {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-30px); }
+        60% { transform: translateY(-15px); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img alt="Book Heaven" src="/images/bookstore.jpg" width="100px" class="me-2">
+          <span class="d-none d-sm-inline-block" style="color: white; font-weight: 600;">Book Heaven</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/"><i class="fas fa-home me-1"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="available_books"><i class="fas fa-book me-1"></i> Available Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="my_books"><i class="fas fa-bookmark me-1"></i> My Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="Book_Register"><i class="fas fa-plus-circle me-1"></i> Register Book</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-7 hero-content slide-up">
+            <h1 class="mb-4">Welcome to Book Heaven</h1>
+            <p>Your gateway to a world of endless stories, knowledge, and inspiration! Whether you're a passionate reader, a casual browser, or searching for the perfect gift, our bookstore has something for everyone.</p>
+            <div class="d-flex gap-3">
+              <a href="available_books" class="btn btn-custom">Explore Books</a>
+              <a href="Book_Register" class="btn btn-outline-light">Add New Book</a>
+            </div>
+          </div>
+          <div class="col-lg-5 text-center fade-in d-none d-lg-block">
+            <img src="https://png.pngtree.com/png-vector/20230728/ourmid/pngtree-students-reading-vector-png-image_6900753.png" class="img-fluid bounce-in" style="max-width: 350px;">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Featured Books Section -->
+    <section class="book-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Featured Books</h2>
+        <div class="row">
+          <!-- Book Card 1 -->
+          <div class="col-md-4 col-sm-6 slide-up" style="animation-delay: 0.1s;">
+            <div class="book-card">
+              <div class="book-img">
+                <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSQljtQl4DjZRuQnx4uEvRDkm3ypc8EQsfZqXBB_3k3bVNIXLd08gEKLaRTgwPbKbRpFJwXjKtoGgOOeqHio5XDMPQti7TVU4FLawDlc7rNSILW-XT-LBqijg" alt="Book Cover">
+              </div>
+              <div class="book-info">
+                <h5>The Great Adventure</h5>
+                <p>An epic journey through uncharted territories that will keep you on the edge of your seat.</p>
+                <div class="book-meta">
+                  <span><i class="fas fa-user me-1"></i> John Author</span>
+                  <span><i class="fas fa-star me-1"></i> 4.8/5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Book Card 2 -->
+          <div class="col-md-4 col-sm-6 slide-up" style="animation-delay: 0.2s;">
+            <div class="book-card">
+              <div class="book-img">
+                <img src="https://m.media-amazon.com/images/I/91FI-BykgWL._UF1000,1000_QL80_.jpg" alt="Book Cover">
+              </div>
+              <div class="book-info">
+                <h5>Mystery of the Ancient Code</h5>
+                <p>A thrilling mystery that unravels secrets hidden for centuries in plain sight.</p>
+                <div class="book-meta">
+                  <span><i class="fas fa-user me-1"></i> Sarah Writer</span>
+                  <span><i class="fas fa-star me-1"></i> 4.6/5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Book Card 3 -->
+          <div class="col-md-4 col-sm-6 slide-up" style="animation-delay: 0.3s;">
+            <div class="book-card">
+              <div class="book-img">
+                <img src="https://m.media-amazon.com/images/I/81j+JHVyr7L._UF1000,1000_QL80_.jpg" alt="Book Cover">
+              </div>
+              <div class="book-info">
+                <h5>Echoes of Tomorrow</h5>
+                <p>A thought-provoking science fiction novel that examines humanity's relationship with technology.</p>
+                <div class="book-meta">
+                  <span><i class="fas fa-user me-1"></i> Alex Futurist</span>
+                  <span><i class="fas fa-star me-1"></i> 4.9/5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-4">
+          <a href="available_books" class="btn btn-custom">View All Books</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5>Book Heaven</h5>
+            <p>Your literary sanctuary with the best collection of books across all genres.</p>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li><a href="/" class="text-white text-decoration-none footerhover">Home</a></li>
+              <li><a href="available_books" class="text-white text-decoration-none footerhover">Available Books</a></li>
+              <li><a href="my_books" class="text-white text-decoration-none footerhover">My Books</a></li>
+              <li><a href="Book_Register" class="text-white text-decoration-none footerhover">Register Book</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h5>Contact Us</h5>
+            <a href="mailto:contact@sairam9640.com" class="text-white text-decoration-none footerhover"><p><i class="fas fa-envelope me-2"></i> contact@sairam9640.com</p></a>
+            <p><i class="fas fa-phone me-2"></i> +91 9876541234</p>
+          </div>
+        </div>
+        <div class="text-center pt-3 border-top border-secondary">
+          <p class="mb-0">&copy; 2024 Book Heaven. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Easter Egg Modal -->
+    <div class="overlay" id="easterEggOverlay"></div>
+    <div class="easter-egg" id="easterEgg">
+      <i class="fas fa-gift fa-3x mb-3" style="color: var(--secondary);"></i>
+      <h3>You Found the Easter Egg!</h3>
+      <p>Congratulations! Use code <strong>BOOKWORM25</strong> for 25% off your next purchase!</p>
+      <button class="btn btn-custom" id="closeEasterEgg">Awesome!</button>
+    </div>
+    
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <script>
+      // Easter Egg - Konami Code Implementation
+      const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let konamiCodePosition = 0;
+      
+      document.addEventListener('keydown', function(e) {
+        // Get the key that was pressed
+        const key = e.key;
+        
+        // Check if the key matches the next key in the Konami code
+        const requiredKey = konamiCode[konamiCodePosition];
+        
+        if (key === requiredKey) {
+          // Move to the next key in the sequence
+          konamiCodePosition++;
+          
+          // If the entire sequence is complete
+          if (konamiCodePosition === konamiCode.length) {
+            // Activate Easter egg
+            activateEasterEgg();
+            // Reset position for next attempt
+            konamiCodePosition = 0;
+          }
+        } else {
+          // Reset position if wrong key is pressed
+          konamiCodePosition = 0;
+        }
+      });
+      
+      function activateEasterEgg() {
+        const overlay = document.getElementById('easterEggOverlay');
+        const easterEgg = document.getElementById('easterEgg');
+        
+        overlay.classList.add('active');
+        easterEgg.classList.add('active');
+      }
+      
+      // Close Easter Egg Modal
+      document.getElementById('closeEasterEgg').addEventListener('click', function() {
+        document.getElementById('easterEggOverlay').classList.remove('active');
+        document.getElementById('easterEgg').classList.remove('active');
+      });
+      
+      
+      
+      // Secret Click Pattern Easter Egg
+      let clickPattern = [];
+      const secretPattern = [1, 1, 2, 3, 5, 8]; // Fibonacci sequence
+      
+      document.addEventListener('click', function() {
+        // Add timestamp to click pattern
+        const now = Date.now();
+        clickPattern.push(now);
+        
+        // Only keep the last 6 clicks
+        if (clickPattern.length > 6) {
+          clickPattern.shift();
+        }
+        
+        // Check if we have enough clicks to check the pattern
+        if (clickPattern.length === 6) {
+          // Calculate time differences between consecutive clicks
+          const diffs = [];
+          for (let i = 1; i < clickPattern.length; i++) {
+            // Convert to deciseconds (100ms units) and round
+            const diff = Math.round((clickPattern[i] - clickPattern[i-1]) / 100);
+            diffs.push(diff);
+          }
+          
+          // Check if the pattern matches the secret pattern
+          let matches = true;
+          for (let i = 0; i < diffs.length; i++) {
+            // Allow some tolerance (±1)
+            if (Math.abs(diffs[i] - secretPattern[i]) > 1) {
+              matches = false;
+              break;
+            }
+          }
+          
+          // If pattern matches, activate easter egg
+          if (matches) {
+            activateEasterEgg();
+            clickPattern = []; // Reset pattern
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
